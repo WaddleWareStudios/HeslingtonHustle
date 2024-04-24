@@ -12,16 +12,17 @@ public class GameSound {
     final Music downSound;
     final Music buttonClickedSound;
     final Music eatingSound;
-    private int soundLevel = 4;
+    private int soundLevel;
 
     /**
      * Initializes sound effects by loading the audio files.
      */
     public GameSound(){
-        upSound = Gdx.audio.newMusic(Gdx.files.internal("sfx/high_note.mp3"));
-        downSound = Gdx.audio.newMusic(Gdx.files.internal("sfx/low_note.mp3"));
-        buttonClickedSound = Gdx.audio.newMusic(Gdx.files.internal("sfx/button_press.mp3"));
-        eatingSound = Gdx.audio.newMusic(Gdx.files.internal("sfx/eating_sound.wav"));
+        (upSound = Gdx.audio.newMusic(Gdx.files.internal("sfx/high_note.mp3"))).setVolume(0);
+        (downSound = Gdx.audio.newMusic(Gdx.files.internal("sfx/low_note.mp3"))).setVolume(0);
+        (buttonClickedSound = Gdx.audio.newMusic(Gdx.files.internal("sfx/button_press.mp3"))).setVolume(0);
+        (eatingSound = Gdx.audio.newMusic(Gdx.files.internal("sfx/eating_sound.wav"))).setVolume(0);
+        this.soundLevel = 0;
     }
 
     /**
@@ -98,6 +99,7 @@ public class GameSound {
             upSound.setVolume(floatingMusicLevel*25/100);
             downSound.setVolume(floatingMusicLevel*25/100);
             buttonClickedSound.setVolume(floatingMusicLevel*25/100);
+            eatingSound.setVolume(floatingMusicLevel*25/100);
         }
     }
 }

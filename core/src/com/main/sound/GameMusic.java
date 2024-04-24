@@ -11,7 +11,7 @@ public class GameMusic {
 
     final Music audio;
     // Music levels is quarters
-    private int musicLevel = 4;
+    private int musicLevel;
 
     private final float musicCap = 0.1f;
     /**
@@ -20,8 +20,10 @@ public class GameMusic {
     public GameMusic() {
         audio = Gdx.audio.newMusic(Gdx.files.internal("music_loop/Ludum Dare 30 - 01.ogg"));
         audio.play();
-        audio.setVolume(musicCap); // Set volume to 100%
+//        audio.setVolume(musicCap); // Set volume to 100%
+        audio.setVolume(0); // Set volume to 100%
         audio.setLooping(true);
+        this.musicLevel = 0;
     }
 
     /**
