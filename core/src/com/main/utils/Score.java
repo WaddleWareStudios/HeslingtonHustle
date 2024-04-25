@@ -18,14 +18,15 @@ public class Score {
     private final Set<String> studyLocations; // Track different study locations
     private final Set<String> recreationLocations; // Track different recreational locations visited
     private final List<Integer> mealTimes; // List to store times meals were eaten (in 24-hour time)
+    private boolean missedStudy; // Flag to check whether a study session was missed on the previous day
     private int studyCount; // Total number of hours studied
     private int mealCount; // Total number of meals eaten
     private int recreationCount; // Total number of recreational activities completed
     private int score; // The player's total score
 
     // Constants for scoring
-    private static final int MAX_STUDY_SESSIONS = 2;
-    private static final int MIN_STUDY_SESSIONS = 1;
+    private static final int MAX_STUDY_HOURS = 6;
+    private static final int MIN_STUDY_HOURS = 2;
     private static final int DAILY_RECREATIONAL_ACTIVITY_BONUS = 4;
     private static final int MEAL_INTERVAL_BONUS = 5;
 
@@ -74,13 +75,20 @@ public class Score {
      * Calculates and updates the player's score based on their actions and sets the score variable.
      * Should be called at the end of each day.
      */
-    public void calculateScore() {
+    public int calculateScore() {
         score = 0;
 
+        //check if study is missed
+        if (studyCount == 0) {
+            missedStudy = true;
+        }
+
         // Add to score based on study sessions
-        if (studyCount >= MIN_STUDY_SESSIONS && studyCount <= MAX_STUDY_SESSIONS) {
-            score += 10; // Reward for studying enough
-        } else if (studyCount < MIN_STUDY_SESSIONS) {
+        if (studyCount >= MIN_STUDY_HOURS && studyCount <= MAX_STUDY_HOURS / 2) {
+            score += 5; // Reward for studying 2-3 hours
+        } else if (studyCount >= MAX_STUDY_HOURS / 2 && studyCount < MAX_STUDY_HOURS) {
+            score += 10; //Reward for studying 3-6 hours
+        } else if (studyCount < MIN_STUDY_HOURS) {
             score -= 5; // Penalty for not studying enough
         } else {
             score -= 3; // Penalty for studying too much
@@ -95,6 +103,8 @@ public class Score {
 
         // Calculate score addition for meals
         score += calculateMealIntervalBonus();
+
+        return score;
     }
 
     /**
@@ -143,6 +153,10 @@ public class Score {
         studyLocations.clear();
         recreationLocations.clear();
         mealTimes.clear();
+        this.studyCount = 0;
+        this.mealCount = 0;
+        this.recreationCount = 0;
+        this.score = 0;
     }
 
     /**
@@ -176,4 +190,17 @@ public class Score {
     public int getRecreationCount() {
         return recreationCount;
     }
+
+    /**
+     * Returns the missedStudy boolean
+     * @return missingStudy boolean
+     */
+    public boolean hasMissedStudy() {
+        return missedStudy;
+    }
+
+    //Only for testing, can be deleted//
+    public List<Integer> getMealIntervals() {return mealTimes; }
+    public Set<String> getStudyLocations() {return studyLocations ;}
+    public Set<String> getRecreationLocations() {return recreationLocations;}
 }
