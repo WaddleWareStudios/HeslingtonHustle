@@ -11,7 +11,7 @@ import com.main.Main;
 
 public class EndScreen implements Screen, InputProcessor {
     final Main game;
-    Texture playAgainButton, exitButton;
+    Texture playAgainButton, exitButton, pinBoard;
     BitmapFont font;
     final String titleText;
     float playAgainButtonY, exitButtonY;
@@ -30,6 +30,9 @@ public class EndScreen implements Screen, InputProcessor {
         playAgainButton = new Texture("end_gui/play_button.png");
         exitButton = new Texture("end_gui/exit_button.png");
         font = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
+
+        // Added code //
+        pinBoard = new Texture("end_gui/school_pinboard.png");
     }
 
     private void calculateDimensions(){
@@ -46,14 +49,19 @@ public class EndScreen implements Screen, InputProcessor {
     }
 
     @Override
-    public void render(float v) {
+        public void render(float v) {
         if (exitFlag) return;
         ScreenUtils.clear(0.3f, 0.55f, 0.7f, 1);
         game.batch.setProjectionMatrix(game.defaultCamera.combined);
         game.batch.begin();
+
+        // Added Code //
+        game.batch.draw(pinBoard, 10, 10, Gdx.graphics.getWidth()-20, Gdx.graphics.getHeight()-20);
+
         font.draw(game.batch, titleText, 0, titleY, game.screenWidth, Align.center, false);
         game.batch.draw(playAgainButton, buttonX, playAgainButtonY, buttonWidth, buttonHeight);
         game.batch.draw(exitButton, buttonX, exitButtonY, buttonWidth, buttonHeight);
+
         game.batch.end();
     }
 

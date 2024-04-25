@@ -480,7 +480,6 @@ public class MainGameScreen implements Screen, InputProcessor {
             }
                 // Added Code //
 
-
             resetDay();
         }
     }
