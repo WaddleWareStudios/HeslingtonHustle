@@ -1,9 +1,15 @@
 package com.main.utils;
 
+import javax.management.ObjectName;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
 import java.util.Scanner;
 
 ///**
@@ -13,18 +19,25 @@ import java.util.Scanner;
 public class Leaderboards
 {
     private final static String FILE_NAME = "leaderboards.txt";
+    private final static Path FILE_PATH = Path.of(FILE_NAME);
     private final static int MAX_ENTRIES = 10;
     private Entry[] entries;
     private int entry_count;
 
-    public class Entry
+    public class Entry implements Comparable<Object>
     {
         public String name;
-        public int score;
+        public Integer score;
         Entry(String name, int score)
         {
             this.name = name;
             this.score = score;
+        }
+        @Override
+        public int compareTo(Object o)
+        {
+            Entry entry = (Entry) o;
+            return -this.score.compareTo(entry.score);
         }
     }
     public Leaderboards()
@@ -34,6 +47,7 @@ public class Leaderboards
         File file = new File(FILE_NAME);
         try {file.createNewFile();}
         catch(IOException e) {System.out.print("File open error occurred\n");e.printStackTrace();}
+        readFromSaved();
     }
     private void readFromSaved()
     {
@@ -56,20 +70,15 @@ public class Leaderboards
             System.out.print("File scanner error occurred\n");
         }
     }
-    private void writeToFile()
-    {
-        try {
-            File file = new File(FILE_NAME);
-            file.delete();
-            file.createNewFile();
-            FileWriter writer = new FileWriter(file);
-            for(int i =0; i < entry_count; ++i)
-            {
-                String line = "#" + entries[i].name + "," + entries[i].score + "\n";
-                writer.write(line);
+    private void writeToFile() {
+        try (BufferedWriter writer = Files.newBufferedWriter(
+                FILE_PATH, StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)) {
+            for (int i = 0; i < entry_count; i++) {
+                Entry entry = entries[i];
+                writer.write("#" + entry.name + "," + entry.score);
+                writer.newLine();
             }
-        }
-        catch(IOException e) {
+        } catch (IOException e) {
             System.out.print("File write error occurred\n");
             e.printStackTrace();
         }
@@ -92,6 +101,7 @@ public class Leaderboards
             System.arraycopy(entries, i, entries, i+1, MAX_ENTRIES-1);
             entries[i] = new Entry(name, score);
         }
+        Arrays.sort(entries,0,entry_count);
         writeToFile();
     }
     public boolean doesPlaceT10(int score)
