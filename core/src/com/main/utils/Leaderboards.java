@@ -61,8 +61,7 @@ public class Leaderboards
                 final String[] parts = line.substring(1).split(",");
                 final String name = parts[0];
                 final int score = Integer.parseInt(parts[1]);
-                this.entries[entry_count] = new Entry(name, score);
-                ++entry_count;
+                this.entries[entry_count++] = new Entry(name, score);
             }
         }
         catch(IOException e)
@@ -107,7 +106,7 @@ public class Leaderboards
     public boolean doesPlaceT10(int score)
     {
         if(entry_count < MAX_ENTRIES) return true;
-        return score > this.entries[9].score;
+        return score > this.entries[MAX_ENTRIES-1].score;
     }
     public Entry[] getEntries() {
         return entries;
