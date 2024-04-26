@@ -641,7 +641,15 @@ public class MainGameScreen implements Screen, InputProcessor {
                         game.gameData.buttonClickedSoundActivate();
                         showMenu = false;
                         lockMovement = fadeOut;
-                        resetDay();
+
+                        // Added Code //
+                        if (dayNum == 7) {
+                            game.screenManager.setScreen(ScreenType.END_SCREEN);
+                        } else {
+                            resetDay();
+                        }
+                        // Added Code //
+
                         duration = 1;
                     }
                     break;
