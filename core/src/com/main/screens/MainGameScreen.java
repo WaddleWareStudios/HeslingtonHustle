@@ -177,12 +177,12 @@ public class MainGameScreen implements Screen, InputProcessor {
     }
 
     @Override
-    public void render(float delta) {
-        if (!lockMovement) player.update(delta);
-        if (!lockTime) updateGameTime(delta); // Update the game clock
+    public void render(float deltaTime) {
+        if (!lockMovement) player.update(deltaTime);
+        if (!lockTime) updateGameTime(deltaTime); // Update the game clock
 
         ScreenUtils.clear(0, 0, 1, 1);
-        drawWorldElements(delta);
+        drawWorldElements(deltaTime);
         drawUIElements();
         drawGameTime(); // Draw current time
     }
