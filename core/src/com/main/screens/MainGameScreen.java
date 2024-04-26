@@ -1,6 +1,7 @@
 package com.main.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
@@ -777,9 +778,27 @@ public class MainGameScreen implements Screen, InputProcessor {
     }
 
     @Override
-    public boolean keyDown(int i) {
+    public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.SEMICOLON) { // keybind for devhack to skip day and add to score
+            skipDayAddScore();
+            return true;
+        }
         return false;
     }
+
+    /**
+     * Skips the current day and updates the score for testing
+     */
+    private void skipDayAddScore() {
+        totalScore += 100;
+        dayNum++;
+
+        System.out.println("day: " + dayNum);
+        System.out.println("score: " + totalScore);
+
+        updateGameTime(10); // Update game time. also checks for last day
+    }
+
 
     @Override
     public boolean keyUp(int i) {
