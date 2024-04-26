@@ -42,7 +42,8 @@ public class MainGameScreen implements Screen, InputProcessor {
     private final Button _menu, _durationUp, _durationDown, _menuBack, _activity;
 
     // Added Code //
-    private final Score dailyScore = new Score();
+    private final Score dailyScore;
+    private boolean hasFailed;
     // Added Code //
 
     // Non-final attributes
@@ -100,6 +101,8 @@ public class MainGameScreen implements Screen, InputProcessor {
 
         // Added Code //
         this.totalScore = 0;
+        this.hasFailed = false;
+        this.dailyScore = new Score();
         // Added Code //
 
         // Setting up the game
@@ -452,34 +455,17 @@ public class MainGameScreen implements Screen, InputProcessor {
     private void updateGameTime(float delta) {
         timeElapsed += delta;
         currentHour = this.getTime();
-        boolean hasFailed = false;
 
         // Ensure the hour cycles through the active hours correctly (08:00 to 00:00)
         if (currentHour >= 24) { // If it reaches 00:00, reset to 08:00 the next day
-            if (dayNum == 7) game.screenManager.setScreen(ScreenType.END_SCREEN);
+            if (dayNum == 7) {
 
-            // Added Code //
-            if (dailyScore.hasMissedStudy()) { //check if player has already missed study for a day
-                if (dailyScore.getStudyCount() == 0) { //check if the player hasn't studied today
-                    hasFailed = true;
-                };
-            }
-            if (!hasFailed) {
-                totalScore += dailyScore.calculateScore();
-
-                System.out.println("Study: " + dailyScore.getStudyCount());
-                System.out.println("Study Locations: " + dailyScore.getStudyLocations());
-                System.out.println("Rec: " + dailyScore.getRecreationCount());
-                System.out.println("Rec Locations: " + dailyScore.getRecreationLocations());
-                System.out.println("Eat: " + dailyScore.getMealCount());
-                System.out.println("Eat Times: " + dailyScore.getMealIntervals());
-                System.out.println("Daily Score: " + dailyScore.getScore());
-                System.out.println("Total Score: " + totalScore + "\n");
-
-                dailyScore.resetDailyCounters();
-            }
+                // Added Code //
+                totalScore += dailyScore.checkStreaks(); // Add bonus points from achieving streaks
                 // Added Code //
 
+                game.screenManager.setScreen(ScreenType.END_SCREEN);
+            }
             resetDay();
         }
     }
@@ -492,6 +478,21 @@ public class MainGameScreen implements Screen, InputProcessor {
         // Calculate the current hour in game time
         int hoursPassed = (int)(timeElapsed / SECONDS_PER_GAME_HOUR);
         return 8 + hoursPassed; // Starts at 08:00
+    }
+
+    /**
+     * adds daily score to totalScore
+     */
+    private void addDailyScore() {
+        if (dailyScore.hasMissedStudy()) { //check if player has already missed study for a day
+            if (dailyScore.getStudyCount() == 0) { //check if the player hasn't studied today
+                hasFailed = true;
+            };
+        }
+        if (!hasFailed) {
+            totalScore += dailyScore.calculateScore();
+            dailyScore.resetDailyCounters();
+        }
     }
     // Added Code //
 
@@ -507,6 +508,10 @@ public class MainGameScreen implements Screen, InputProcessor {
         if (energyCounter > 10) energyCounter = 10;
         energyBar.dispose();
         energyBar = setEnergyBar();
+
+        // Added Code //
+        addDailyScore();
+        // Added Code //
     }
 
     /**
@@ -644,8 +649,11 @@ public class MainGameScreen implements Screen, InputProcessor {
 
                         // Added Code //
                         if (dayNum == 7) {
+                            addDailyScore();
+                            totalScore += dailyScore.checkStreaks(); // Add bonus points from achieving streaks
                             game.screenManager.setScreen(ScreenType.END_SCREEN);
                         } else {
+                            dailyScore.incrementSleep(); //increments count for number of early nights
                             resetDay();
                         }
                         // Added Code //

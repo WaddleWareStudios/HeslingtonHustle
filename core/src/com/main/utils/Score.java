@@ -18,17 +18,29 @@ public class Score {
     private final Set<String> studyLocations; // Track different study locations
     private final Set<String> recreationLocations; // Track different recreational locations visited
     private final List<Integer> mealTimes; // List to store times meals were eaten (in 24-hour time)
-    private boolean missedStudy; // Flag to check whether a study session was missed on the previous day
+    private boolean missedStudy; // Boolean to check whether a study session was missed on the previous day
     private int studyCount; // Total number of hours studied
     private int mealCount; // Total number of meals eaten
     private int recreationCount; // Total number of recreational activities completed
     private int score; // The player's total score
+
+    // Used for streaks:
+    private final List<String> streaks; // List to store the streaks achieved by the user.
+    private int daysAtSports;
+    private int earlyNights;
+    private int daysFeedDucks;
+    private int daysAtCS;
+    private int daysVisitAll;
+    private boolean allRounder;
 
     // Constants for scoring
     private static final int MAX_STUDY_HOURS = 6;
     private static final int MIN_STUDY_HOURS = 2;
     private static final int DAILY_RECREATIONAL_ACTIVITY_BONUS = 4;
     private static final int MEAL_INTERVAL_BONUS = 5;
+
+    // Constants for streaks
+    private static final int NUM_LOCATIONS = 6;
 
     /**
      * Constructs a Score object and initialises other related parameters.
@@ -37,10 +49,20 @@ public class Score {
         this.studyLocations = new HashSet<>();
         this.recreationLocations = new HashSet<>();
         this.mealTimes = new ArrayList<>();
+        this.streaks = new ArrayList<>();
         this.studyCount = 0;
         this.mealCount = 0;
         this.recreationCount = 0;
         this.score = 0;
+
+        // Streaks counters:
+        this.daysAtSports = 0;
+        this.earlyNights = 0;
+        this.daysFeedDucks = 0;
+        this.daysAtCS = 0;
+        this.daysVisitAll = 0;
+        this.allRounder = false;
+
     }
 
     /**
@@ -141,7 +163,6 @@ public class Score {
                 }
             }
         }
-
         return bonus;
     }
 
@@ -150,13 +171,73 @@ public class Score {
      * Should be called at the end of the day.
      */
     public void resetDailyCounters() {
+        incrementStreakCounters(); //increment streak counters for the day.
         studyLocations.clear();
         recreationLocations.clear();
         mealTimes.clear();
         this.studyCount = 0;
         this.mealCount = 0;
         this.recreationCount = 0;
-        this.score = 0;
+    }
+
+    /**
+     * Checks the streak counter variables. If correct conditions have been met, the streak is added to streaks list.
+     * Calculates bonus points from achieved streaks
+     * @return The streak bonus
+     */
+    public int checkStreaks() {
+        int streakBonus = 0;
+        if (daysFeedDucks == 7) {
+            streaks.add("WaddleWare Representative");
+            streakBonus += 10;
+        }
+        if (daysAtCS >= 5) {
+            streaks.add("Programmer");
+            streakBonus += 5;
+        }
+        if (daysAtSports == 7) {
+            streaks.add("Athlete");
+            streakBonus += 10;
+        }
+        if (earlyNights >= 5) {
+            streaks.add("Early Nights");
+            streakBonus += 5;
+        }
+        if (allRounder) {
+            streaks.add("All Rounder");
+            streakBonus += 3;
+        }
+        if (daysVisitAll == 7) {
+            streaks.add("Daily Routine");
+            streakBonus += 15;
+        }
+        return streakBonus;
+    }
+
+    /**
+     * Increments the streak counter variables
+     */
+    private void incrementStreakCounters() {
+        if (recreationLocations.contains("Feed_ducks")) {
+            daysFeedDucks += 1;
+        }
+        if (recreationLocations.contains("Gym_door")) {
+            daysAtSports += 1;
+        }
+        if (studyLocations.contains("Comp_sci_door")) {
+            daysAtCS += 1;
+        }
+        if (recreationLocations.size() + studyLocations.size() == NUM_LOCATIONS) {
+            daysVisitAll += 1;
+            allRounder = true;
+        }
+    }
+
+    /**
+     * Increments earlyNights counter variable
+     */
+    public void incrementSleep() {
+        earlyNights += 1;
     }
 
     /**
@@ -199,8 +280,11 @@ public class Score {
         return missedStudy;
     }
 
-    //Only for testing, can be deleted//
-    public List<Integer> getMealIntervals() {return mealTimes; }
-    public Set<String> getStudyLocations() {return studyLocations ;}
-    public Set<String> getRecreationLocations() {return recreationLocations;}
+    /**
+     * Returns the streaks achieved by player
+     * @return List of streaks
+     */
+    public List<String> getStreaks() {
+        return streaks;
+    }
 }
