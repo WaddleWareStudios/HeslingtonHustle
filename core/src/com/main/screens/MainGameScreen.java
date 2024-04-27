@@ -465,7 +465,7 @@ public class MainGameScreen implements Screen, InputProcessor {
                 totalScore += dailyScore.checkStreaks(); // Add bonus points from achieving streaks
                 // Added Code //
 
-                game.screenManager.setScreen(ScreenType.END_SCREEN);
+                game.screenManager.setScreen(ScreenType.END_SCREEN, totalScore);
             }
             resetDay();
         }
@@ -488,7 +488,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         if (dailyScore.hasMissedStudy()) { //check if player has already missed study for a day
             if (dailyScore.getStudyCount() == 0) { //check if the player hasn't studied today
                 hasFailed = true;
-            };
+            }
         }
         if (!hasFailed) {
             totalScore += dailyScore.calculateScore();
@@ -791,6 +791,12 @@ public class MainGameScreen implements Screen, InputProcessor {
             skipDayAddScore();
             return true;
         }
+
+        if (keycode == Input.Keys.SLASH) {
+            game.screenManager.setScreen(ScreenType.END_SCREEN, totalScore); // Skip to the end screen
+            return true;
+        }
+
         return false;
     }
 

@@ -23,7 +23,7 @@ public class ScreenManager {
      *
      * @param game The main game class instance.
      */
-    public ScreenManager(Main game){
+    public ScreenManager(Main game) {
         this.game = game;
         this.screensInMemory = new HashMap<>();
     }
@@ -33,7 +33,7 @@ public class ScreenManager {
      *
      * @param screenType The type of the screen to keep in memory.
      */
-    public void keepInMemory(ScreenType screenType){
+    public void keepInMemory(ScreenType screenType) {
         if (screenType.equals(curScreenType) && curScreen != null){
             screensInMemory.put(screenType, curScreen);
         }
@@ -42,8 +42,8 @@ public class ScreenManager {
         }
     }
 
-    public void clearMemory(){
-        for (Screen screen : screensInMemory.values()){
+    public void clearMemory() {
+        for (Screen screen : screensInMemory.values()) {
             screen.dispose();
         }
         screensInMemory.clear();
@@ -59,7 +59,7 @@ public class ScreenManager {
         if (curScreen != null && !screensInMemory.containsKey(curScreenType)){
             curScreen.dispose();
         }
-        if (screensInMemory.containsKey(screenType)){
+        if (screensInMemory.containsKey(screenType)) {
             curScreen = screensInMemory.get(screenType);
         }
         else {
@@ -77,9 +77,9 @@ public class ScreenManager {
      * @param width The new width of the window.
      * @param height The new height of the window.
      */
-    public void resize(int width, int height){
+    public void resize(int width, int height) {
         curScreen.resize(width, height);
-        for (Screen screen : screensInMemory.values()){
+        for (Screen screen : screensInMemory.values()) {
             screen.resize(width, height);
         }
     }
@@ -90,8 +90,8 @@ public class ScreenManager {
      * @param type The type of the screen to create.
      * @return The created screen, or null if the type is unknown.
      */
-    private Screen createScreen(ScreenType type, Object... args){
-        switch (type){
+    private Screen createScreen(ScreenType type, Object... args) {
+        switch (type) {
             case MAIN_MENU:
                 return new MainMenuScreen(game);
             case GAME_SCREEN:
@@ -103,8 +103,9 @@ public class ScreenManager {
             case MINI_GAME:
                 return new TypingGame(game, (int) args[0]);
             case END_SCREEN:
-                return new EndScreen(game);
+                return new EndScreen(game, (int) args[0]);
+            default:
+                throw new IllegalArgumentException("Unknown screen type: " + type);
         }
-        return null;
     }
 }

@@ -11,6 +11,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * The Leaderboards class is a new addition to the project for assessment 2, responsible for managing
+ * a leaderboard and tracking the top 10 high scores.
+ *
  * The Leaderboards class manages a leaderboard with a specified maximum number of entries.
  * The leaderboard entries are stored in a CSV file with each line representing a name and score.
  * The class provides methods for reading, writing, and updating the leaderboard data.
