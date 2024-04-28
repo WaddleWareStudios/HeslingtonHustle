@@ -9,8 +9,8 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.main.Main;
+import com.main.utils.Button;
 import com.main.utils.Leaderboards;
-import java.util.Arrays;
 
 /**
  * Represents the end screen of the game, displaying the users score and a leaderboard.
@@ -27,6 +27,7 @@ public class EndScreen implements Screen, InputProcessor {
     private boolean usernameEntry = false;
     boolean exitFlag;
     float playAgainButtonY, buttonX, buttonWidth, buttonHeight, maxNameWidth;
+    Button playAgain;
     float titleY, userScoreY, leaderboardStartY, entryBoxY;
     GlyphLayout layout = new GlyphLayout();
     private float blinkTimer = 0f; // Timer var for blinking of underscores in text entry
@@ -44,42 +45,34 @@ public class EndScreen implements Screen, InputProcessor {
         playAgainButton = new Texture("end_gui/play_button.png");
         font = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
         leaderboards = new Leaderboards();
+        playAgain = new Button();
 
-        calculateDimensions();
-        calculatePositions();
+        initDimensions();
 
         // Check if user scored high enough to add their name to the leaderboard
-        if (leaderboards.doesPlaceT10(userScore)) {
-            usernameEntry = true;
-        }
+        usernameEntry = leaderboards.doesPlaceT10(userScore);
     }
 
     /**
-     * Calculates dimensions of buttons and text
+     * calculates the dimensions and positions of buttons and textures
      */
-    private void calculateDimensions() {
-        buttonWidth = playAgainButton.getWidth() * 6 * game.scaleFactorX; // Adjust button width
-        buttonHeight = playAgainButton.getHeight() * 6 * game.scaleFactorY; // Adjust button height
+    private void initDimensions()
+    {
+        playAgain.init(
+                (game.screenWidth - (playAgainButton.getWidth() * 6 * game.scaleFactorX)) / 2f,
+                50f * game.scaleFactorY,
+                playAgainButton.getWidth() * 6 * game.scaleFactorX,
+                playAgainButton.getHeight() * 6 * game.scaleFactorY
+        );
         font.getData().setScale(3f * game.scaleFactorX, 3f * game.scaleFactorY); // Adjust font scale
-    }
-
-    /**
-     * Calculates the positions of buttons and text
-     */
-    private void calculatePositions() {
         titleY = game.screenHeight + 40f * game.scaleFactorY;
         userScoreY = titleY - 50f * game.scaleFactorY;
-
         // Name entry box and prompt position
         entryBoxY = userScoreY - 60f * game.scaleFactorY;
-
         // Leaderboard position
         leaderboardStartY = entryBoxY - 60f * game.scaleFactorY;
-
-        // Play again button position
-        buttonX = (game.screenWidth - buttonWidth) / 2f;
-        playAgainButtonY = 50f * game.scaleFactorY;
     }
+
 
     /**
      * Displays the end screen, including the user's score, prompt for entering a username if necessary, and the leaderboard.
@@ -107,7 +100,7 @@ public class EndScreen implements Screen, InputProcessor {
         displayLeaderboard(titleX);
 
         // Draw play again button
-        game.batch.draw(playAgainButton, buttonX, playAgainButtonY, buttonWidth, buttonHeight);
+        game.batch.draw(playAgainButton, playAgain.x(), playAgain.y(), playAgain.width(), playAgain.height());
 
         game.batch.end();
     }
@@ -254,8 +247,7 @@ public class EndScreen implements Screen, InputProcessor {
         touchY = game.screenHeight - touchY;
 
         // Check if play again button is clicked
-        if (touchX >= buttonX && touchX <= buttonX + buttonWidth &&
-                touchY >= playAgainButtonY && touchY <= playAgainButtonY + buttonHeight) {
+        if (playAgain.isClicked(touchX, touchY)) {
             game.gameData.buttonClickedSoundActivate();
             game.setup();
             return true;
@@ -297,8 +289,7 @@ public class EndScreen implements Screen, InputProcessor {
 
     @Override
     public void resize(int i, int i1) {
-        calculateDimensions();
-        calculatePositions();
+        initDimensions();
     }
 
     @Override

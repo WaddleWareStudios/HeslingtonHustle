@@ -554,8 +554,9 @@ public class MainGameScreen implements Screen, InputProcessor {
         if (_menu.isClicked(touchX, touchY)) {
             game.gameData.buttonClickedSoundActivate();
             game.screenManager.setScreen(ScreenType.MAIN_MENU);
+            return true;
         }
-        else if (showMenu){
+        if (showMenu){
             switch (activity){
                 case "study":
                     if (_durationUp.isClicked(touchX,touchY)) {
