@@ -23,10 +23,11 @@ public class EndScreen implements Screen, InputProcessor {
     final String titleText;
     private final Leaderboards leaderboards;
     private String username = "";
+    private final String streaks;
     private final int userScore;
     private boolean usernameEntry = false;
     boolean exitFlag;
-    float playAgainButtonY, buttonX, buttonWidth, buttonHeight, maxNameWidth;
+    float maxNameWidth;
     Button playAgain;
     float titleY, userScoreY, leaderboardStartY, entryBoxY;
     GlyphLayout layout = new GlyphLayout();
@@ -38,7 +39,7 @@ public class EndScreen implements Screen, InputProcessor {
      * @param game The main game instance.
      * @param userScore The user's score achieved in the game.
      */
-    public EndScreen(Main game, int userScore) {
+    public EndScreen(Main game, int userScore, String streaks) {
         this.game = game;
         this.userScore = userScore;
         titleText = "Game Over";
@@ -46,7 +47,7 @@ public class EndScreen implements Screen, InputProcessor {
         font = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
         leaderboards = new Leaderboards();
         playAgain = new Button();
-
+        this.streaks = streaks;
         initDimensions();
 
         // Check if user scored high enough to add their name to the leaderboard

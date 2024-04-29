@@ -103,7 +103,7 @@ public class ScreenManager {
             case MINI_GAME:
                 return new TypingGame(game, (int) args[0]);
             case END_SCREEN:
-                return new EndScreen(game, (int) args[0]);
+                return new EndScreen(game, (int) args[0], (String) args[1]);
             default:
                 throw new IllegalArgumentException("Unknown screen type: " + type);
         }

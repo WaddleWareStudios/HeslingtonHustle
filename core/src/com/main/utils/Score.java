@@ -14,6 +14,14 @@ import java.util.HashSet;
  * the player's current score, study count, meal count, and recreation count.
  */
 public class Score {
+    // Constants for scoring
+    private static final int MAX_STUDY_HOURS = 6;
+    private static final int MIN_STUDY_HOURS = 2;
+    private static final int DAILY_RECREATIONAL_ACTIVITY_BONUS = 4;
+    private static final int MEAL_INTERVAL_BONUS = 5;
+
+    // Constants for streaks
+    private static final int NUM_LOCATIONS = 6;
 
     private final Set<String> studyLocations; // Track different study locations
     private final Set<String> recreationLocations; // Track different recreational locations visited
@@ -25,7 +33,8 @@ public class Score {
     private int score; // The player's total score
 
     // Used for streaks:
-    private final List<String> streaks; // List to store the streaks achieved by the user.
+//    private final List<String> streaks; // List to store the streaks achieved by the user.
+    private String streaks;
     private int daysAtSports;
     private int earlyNights;
     private int daysFeedDucks;
@@ -33,14 +42,6 @@ public class Score {
     private int daysVisitAll;
     private boolean allRounder;
 
-    // Constants for scoring
-    private static final int MAX_STUDY_HOURS = 6;
-    private static final int MIN_STUDY_HOURS = 2;
-    private static final int DAILY_RECREATIONAL_ACTIVITY_BONUS = 4;
-    private static final int MEAL_INTERVAL_BONUS = 5;
-
-    // Constants for streaks
-    private static final int NUM_LOCATIONS = 6;
 
     /**
      * Constructs a Score object and initialises other related parameters.
@@ -49,7 +50,7 @@ public class Score {
         this.studyLocations = new HashSet<>();
         this.recreationLocations = new HashSet<>();
         this.mealTimes = new ArrayList<>();
-        this.streaks = new ArrayList<>();
+        this.streaks = "";
         this.studyCount = 0;
         this.mealCount = 0;
         this.recreationCount = 0;
@@ -188,27 +189,27 @@ public class Score {
     public int checkStreaks() {
         int streakBonus = 0;
         if (daysFeedDucks == 7) {
-            streaks.add("WaddleWare Representative");
+            streaks += "WaddleWare Representative\n";
             streakBonus += 10;
         }
         if (daysAtCS >= 5) {
-            streaks.add("Programmer");
+            streaks += "Programmer\n";
             streakBonus += 5;
         }
         if (daysAtSports == 7) {
-            streaks.add("Athlete");
+            streaks += "Athlete\n";
             streakBonus += 10;
         }
         if (earlyNights >= 5) {
-            streaks.add("Early Nights");
+            streaks += "Early Nights\n";
             streakBonus += 5;
         }
         if (allRounder) {
-            streaks.add("All Rounder");
+            streaks += "All Rounder\n";
             streakBonus += 3;
         }
         if (daysVisitAll == 7) {
-            streaks.add("Daily Routine");
+            streaks += "Daily Routine\n";
             streakBonus += 15;
         }
         return streakBonus;
@@ -284,7 +285,7 @@ public class Score {
      * Returns the streaks achieved by player
      * @return List of streaks
      */
-    public List<String> getStreaks() {
+    public String getStreaks() {
         return streaks;
     }
 }

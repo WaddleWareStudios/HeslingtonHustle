@@ -465,7 +465,7 @@ public class MainGameScreen implements Screen, InputProcessor {
                 totalScore += dailyScore.checkStreaks(); // Add bonus points from achieving streaks
                 // Added Code //
 
-                game.screenManager.setScreen(ScreenType.END_SCREEN, totalScore);
+                game.screenManager.setScreen(ScreenType.END_SCREEN, totalScore, dailyScore.getStreaks());
             }
             resetDay();
         }
@@ -653,7 +653,7 @@ public class MainGameScreen implements Screen, InputProcessor {
                         if (dayNum == 7) {
                             addDailyScore();
                             totalScore += dailyScore.checkStreaks(); // Add bonus points from achieving streaks
-                            game.screenManager.setScreen(ScreenType.END_SCREEN);
+                            game.screenManager.setScreen(ScreenType.END_SCREEN, totalScore, dailyScore.getStreaks());
                         } else {
                             dailyScore.incrementSleep(); //increments count for number of early nights
                             resetDay();
@@ -794,7 +794,8 @@ public class MainGameScreen implements Screen, InputProcessor {
         }
 
         if (keycode == Input.Keys.SLASH) {
-            game.screenManager.setScreen(ScreenType.END_SCREEN, totalScore); // Skip to the end screen
+//            game.screenManager.setScreen(ScreenType.END_SCREEN, totalScore, dailyScore.getStreaks()); // Skip to the end screen
+            game.screenManager.setScreen(ScreenType.END_SCREEN, totalScore, "WaddleWare Representative\nProgrammer\nAthlete\nEarly Nights\nAll Rounder\nDaily Routine\n"); // Skip to the end screen
             return true;
         }
 
