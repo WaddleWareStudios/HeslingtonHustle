@@ -21,7 +21,7 @@ public class Score {
     private static final int MEAL_INTERVAL_BONUS = 5;
 
     // Constants for streaks
-    private static final int NUM_LOCATIONS = 6;
+    private static final int NUM_LOCATIONS = 7;
 
     private final Set<String> studyLocations; // Track different study locations
     private final Set<String> recreationLocations; // Track different recreational locations visited

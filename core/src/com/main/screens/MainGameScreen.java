@@ -212,6 +212,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         if (collisionHandler.isTouching("Goodricke_door", player.getHitBox())) return "Goodricke_door";
         if (collisionHandler.isTouching("Feed_ducks", player.getHitBox())) return "Feed_ducks";
         if (collisionHandler.isTouching("Visit_city", player.getHitBox())) return "Visit_city";
+        if (collisionHandler.isTouching("Ron_cooke_door", player.getHitBox())) return "Ron_cooke_door";
         return "";
     }
 
@@ -328,6 +329,7 @@ public class MainGameScreen implements Screen, InputProcessor {
                 drawMenuOption(player.worldX + 30, player.worldY + 20, "Study", 0);
                 popupVisible = true;
                 break;
+            case "Ron_cooke_door":
             case "Piazza_door":
                 drawMenuOption(player.worldX + 30, player.worldY + 20, "Study", 0);
                 drawMenuOption(player.worldX + 30, player.worldY + 35, "Eat", 0);
@@ -678,7 +680,7 @@ public class MainGameScreen implements Screen, InputProcessor {
                         duration = 1;
                     }
                     break;
-
+                case "Ron_cooke_door":
                 case "Piazza_door":
                     if (touchX >= studyOpt.x && touchX <= studyOpt.x + popupMenuWidth * zoom && touchY >= studyOpt.y && touchY <= studyOpt.y + popupMenuHeight * zoom) {
                         game.gameData.buttonClickedSoundActivate();
