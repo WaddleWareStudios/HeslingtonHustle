@@ -1,7 +1,7 @@
 package com.main.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input; // Added code
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
@@ -17,7 +17,7 @@ import com.main.Main;
 import com.main.entity.Player;
 import com.main.map.GameMap;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.main.utils.*;
+import com.main.utils.*; // Added code
 
 /**
  * The MainGameScreen class is responsible for rendering and updating all the game elements
@@ -26,8 +26,8 @@ import com.main.utils.*;
 public class MainGameScreen implements Screen, InputProcessor {
     //made them to be public static, although it should probably be a class to manage time.
     //this is needed as time information is needed outside of this class.
-    public static final float GAME_DAY_LENGTH_IN_SECONDS    = 60f;
-    public static final float SECONDS_PER_GAME_HOUR         = GAME_DAY_LENGTH_IN_SECONDS / 16;
+    public static final float GAME_DAY_LENGTH_IN_SECONDS    = 60f; // Added code
+    public static final float SECONDS_PER_GAME_HOUR         = GAME_DAY_LENGTH_IN_SECONDS / 16; // Added code
     // Final attributes
     private final Color shader;
     private final float zoom = 3f;
@@ -40,7 +40,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     private final Texture menuButton, popupMenu, durationUpButton, durationDownButton,
     menuBackButton, menuStudyButton, menuSleepButton, menuGoButton,
     durationMenuBackground, counterBackground;
-    private final Button _menu, _durationUp, _durationDown, _menuBack, _activity;
+    private final Button _menu, _durationUp, _durationDown, _menuBack, _activity; // Added code
 
     // Added Code //
     private final Score dailyScore;
@@ -51,12 +51,12 @@ public class MainGameScreen implements Screen, InputProcessor {
     private Texture energyBar;
     private float counterBackgroundY, counterBackgroundX, counterBackgroundWidth, counterBackgroundHeight;
     private float popupMenuWidth, popupMenuHeight;
-    private float durationMenuBackgroundX, durationMenuBackgroundY;
-    private float durationMenuBackgroundWidth, durationMenuBackgroundHeight;
+    private float durationMenuBackgroundX, durationMenuBackgroundY; // Added code
+    private float durationMenuBackgroundWidth, durationMenuBackgroundHeight; // Added code
     private float durationTextY, menuTitleY, hoursLabelY;
     private float energyBarY, energyBarX, energyBarWidth, energyBarHeight;
     private String activity, popupMenuType;
-    private int energyCounter, duration, dayNum, recActivity, studyHours, mealCount, currentHour, totalScore;
+    private int energyCounter, duration, dayNum, recActivity, studyHours, mealCount, currentHour, totalScore; // Added code
     private float timeElapsed, fadeTime, minShade;
     private boolean fadeOut, lockTime, lockMovement, lockPopup, resetPos, popupVisible, showMenu;
 
@@ -82,11 +82,11 @@ public class MainGameScreen implements Screen, InputProcessor {
         this.menuSleepButton = new Texture("sleep_button.png");
         this.menuGoButton = new Texture("go_button.png");
 
-        this._activity = new Button();
-        this._menu = new Button();
-        this._durationUp = new Button();
-        this._durationDown = new Button();
-        this._menuBack = new Button();
+        this._activity = new Button(); // Added code
+        this._menu = new Button(); // Added code
+        this._durationUp = new Button(); // Added code
+        this._durationDown = new Button(); // Added code
+        this._menuBack = new Button(); // Added code
 
         // Initialize non-final attributes
         this.activity = "";
@@ -100,11 +100,11 @@ public class MainGameScreen implements Screen, InputProcessor {
         this.minShade = 0;
         this.fadeOut = this.lockTime = this.lockMovement = this.lockPopup = this.resetPos = this.popupVisible = this.showMenu = false;
 
-        // Added Code //
+        // Start of added Code
         this.totalScore = 0;
         this.hasFailed = false;
         this.dailyScore = new Score();
-        // Added Code //
+        // End of added Code
 
         // Setting up the game
         this.camera = new OrthographicCamera();
@@ -116,15 +116,15 @@ public class MainGameScreen implements Screen, InputProcessor {
         this.shapeRenderer = new ShapeRenderer();
         this.energyBar = setEnergyBar();
 
-        this.initDimensions();
+        this.initDimensions(); // Added code
         this.popupFont.getData().setScale(0.4f, 0.4f);
         this.player.setPos(1389, 635);
         this.camera.setToOrtho(false, this.game.screenWidth / this.zoom, this.game.screenHeight / this.zoom);
         this.camera.update();
     }
 
-    private void initDimensions()
-    {
+    private void initDimensions() {
+        // Start of added code
         final float scaleX = game.scaleFactorX, scaleY = game.scaleFactorY, screenWidth = game.screenWidth, screenHeight = game.screenHeight;
         final float repeatedValue1 = screenWidth / 2f - (50 * scaleX) / 2f + 150 * scaleX;
         final float repeatedValue2 = screenHeight / 2f - (50 * scaleY) / 2f - 60 * scaleY;
@@ -165,8 +165,6 @@ public class MainGameScreen implements Screen, InputProcessor {
         counterBackgroundHeight = 150 * scaleY;
         durationMenuBackgroundWidth = 500 * scaleX;
         durationMenuBackgroundHeight = 500 * scaleY;
-        popupMenuWidth = 35;
-        popupMenuHeight = 10;
         font.getData().setScale(scaleX, scaleY);
         durationFont.getData().setScale(3f * scaleX, 3f * scaleY);
         energyBarX = 30 * scaleX + this._menu.width();
@@ -178,15 +176,19 @@ public class MainGameScreen implements Screen, InputProcessor {
         menuTitleY = 730 * scaleY;
         durationTextY = 503 * scaleY;
         hoursLabelY = 580 * scaleY;
+        // End of added code
+
+        popupMenuWidth = 35;
+        popupMenuHeight = 10;
     }
 
     @Override
     public void render(float deltaTime) {
-        if (!lockMovement) player.update(deltaTime);
-        if (!lockTime) updateGameTime(deltaTime); // Update the game clock
+        if (!lockMovement) player.update(deltaTime); // Added code
+        if (!lockTime) updateGameTime(deltaTime); // Update the game clock // Added code
 
         ScreenUtils.clear(0, 0, 1, 1);
-        drawWorldElements(deltaTime);
+        drawWorldElements(deltaTime); // Added code
         drawUIElements();
         drawGameTime(); // Draw current time
     }
@@ -197,7 +199,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         Gdx.input.setInputProcessor(this);
         lockTime = false;
         player.updateGender();
-        player.setDirection(Directions.Down);
+        player.setDirection(Directions.Down); // Added code
     }
 
     /**
@@ -210,9 +212,9 @@ public class MainGameScreen implements Screen, InputProcessor {
         if (collisionHandler.isTouching("Piazza_door", player.getHitBox())) return "Piazza_door";
         if (collisionHandler.isTouching("Gym_door", player.getHitBox())) return "Gym_door";
         if (collisionHandler.isTouching("Goodricke_door", player.getHitBox())) return "Goodricke_door";
-        if (collisionHandler.isTouching("Feed_ducks", player.getHitBox())) return "Feed_ducks";
-        if (collisionHandler.isTouching("Visit_city", player.getHitBox())) return "Visit_city";
-        if (collisionHandler.isTouching("Ron_cooke_door", player.getHitBox())) return "Ron_cooke_door";
+        if (collisionHandler.isTouching("Feed_ducks", player.getHitBox())) return "Feed_ducks"; // Added code
+        if (collisionHandler.isTouching("Visit_city", player.getHitBox())) return "Visit_city"; // Added code
+        if (collisionHandler.isTouching("Ron_cooke_door", player.getHitBox())) return "Ron_cooke_door"; // Added code
         return "";
     }
 
@@ -228,10 +230,10 @@ public class MainGameScreen implements Screen, InputProcessor {
                 return "Sleep Early";
             case "exercise":
                 return "Exercise";
-            case "feed_ducks":
-                return "Feed the Ducks";
-            case "visit_city":
-                return "Visit City";
+            case "feed_ducks": // Added code
+                return "Feed the Ducks"; // Added code
+            case "visit_city": // Added code
+                return "Visit City"; // Added code
             default:
                 return "";
         }
@@ -248,9 +250,9 @@ public class MainGameScreen implements Screen, InputProcessor {
             case "sleep":
                 return menuSleepButton;
             case "exercise":
-            case "feed_ducks":
-            case "visit_city":
-                return menuGoButton;
+            case "feed_ducks": // Added code
+            case "visit_city": // Added code
+                return menuGoButton; // Added code
             default:
                 return null;
         }
@@ -303,20 +305,19 @@ public class MainGameScreen implements Screen, InputProcessor {
         activityButton = getActivityButton();
         title = getMenuTitle();
 
-        game.batch.begin();
+        game.batch.begin(); // Added code
         game.batch.draw(durationMenuBackground, durationMenuBackgroundX, durationMenuBackgroundY, durationMenuBackgroundWidth, durationMenuBackgroundHeight);
-        game.batch.draw(activityButton, _activity.x(), _activity.y(), _activity.width(), _activity.height());
-        game.batch.draw(menuBackButton, _menuBack.x(), _menuBack.y(), _menuBack.width(), _menuBack.height());
+        game.batch.draw(activityButton, _activity.x(), _activity.y(), _activity.width(), _activity.height()); // Added code
+        game.batch.draw(menuBackButton, _menuBack.x(), _menuBack.y(), _menuBack.width(), _menuBack.height()); // Added code
         durationFont.draw(game.batch, title, 0, menuTitleY, game.screenWidth, Align.center, false);
 
         if (!activity.equals("sleep")) {
-            game.batch.draw(durationDownButton, _durationDown.x(),  _durationDown.y(),  _durationDown.width(),  _durationDown.height());
-            game.batch.draw(durationUpButton,   _durationUp.x(),    _durationUp.y(),    _durationUp.width(),    _durationUp.height());
+            game.batch.draw(durationDownButton, _durationDown.x(),  _durationDown.y(),  _durationDown.width(),  _durationDown.height()); // Added code
+            game.batch.draw(durationUpButton,   _durationUp.x(),    _durationUp.y(),    _durationUp.width(),    _durationUp.height()); // Added code
             durationFont.draw(game.batch, Integer.toString(duration), 0, durationTextY, game.screenWidth, Align.center, false);
             durationFont.draw(game.batch, "Hours", 0, hoursLabelY, game.screenWidth, Align.center, false);
         }
         game.batch.end();
-
     }
 
     /**
@@ -329,7 +330,7 @@ public class MainGameScreen implements Screen, InputProcessor {
                 drawMenuOption(player.worldX + 30, player.worldY + 20, "Study", 0);
                 popupVisible = true;
                 break;
-            case "Ron_cooke_door":
+            case "Ron_cooke_door": // Added code
             case "Piazza_door":
                 drawMenuOption(player.worldX + 30, player.worldY + 20, "Study", 0);
                 drawMenuOption(player.worldX + 30, player.worldY + 35, "Eat", 0);
@@ -350,6 +351,7 @@ public class MainGameScreen implements Screen, InputProcessor {
                 }
                 drawMenuOption(player.worldX + 30, player.worldY + 20, "Sleep", shadeOption);
                 break;
+            // Start of added code
             case "Feed_ducks":
                 drawMenuOption(player.worldX + 30, player.worldY + 20, "Feed", 0);
                 popupVisible = true;
@@ -358,12 +360,12 @@ public class MainGameScreen implements Screen, InputProcessor {
                 drawMenuOption(player.worldX + 30, player.worldY + 20, "Visit City", 0);
                 popupVisible = true;
                 break;
+            // End of added code
             default:
                 popupVisible = false;
                 break;
         }
     }
-
 
     /**
      * Draws a shade overlay on the screen with a specified alpha transparency.
@@ -391,7 +393,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         lockPopup = true;
         showMenu = false;
         this.resetPos = resetPos;
-        minShade = timeElapsed/ SECONDS_PER_GAME_HOUR > 11 ? (timeElapsed - 11 * SECONDS_PER_GAME_HOUR)/(GAME_DAY_LENGTH_IN_SECONDS - 11 * SECONDS_PER_GAME_HOUR) : 0;
+        minShade = timeElapsed/ SECONDS_PER_GAME_HOUR > 11 ? (timeElapsed - 11 * SECONDS_PER_GAME_HOUR)/(GAME_DAY_LENGTH_IN_SECONDS - 11 * SECONDS_PER_GAME_HOUR) : 0; // Added code
     }
 
     /**
@@ -408,7 +410,7 @@ public class MainGameScreen implements Screen, InputProcessor {
             else{
                 if (resetPos) {
                     player.setPos( 1389, 635);
-                    player.setDirection(Directions.Down);
+                    player.setDirection(Directions.Down); // Added code
                 }
                 fadeTime = 0;
                 fadeOut = false;
@@ -429,10 +431,10 @@ public class MainGameScreen implements Screen, InputProcessor {
         gameMap.render();
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
-        game.batch.draw(player.getCurrentFrame(), player.worldX, player.worldY, Player.SPRITE_X, Player.SPRITE_Y);
+        game.batch.draw(player.getCurrentFrame(), player.worldX, player.worldY, Player.SPRITE_X, Player.SPRITE_Y); // Added code
         if (!lockPopup) drawPopUpMenu();
         game.batch.end();
-        if (!fadeOut && timeElapsed/ SECONDS_PER_GAME_HOUR > 11) drawShadeOverlay((timeElapsed - 11 * SECONDS_PER_GAME_HOUR)/(GAME_DAY_LENGTH_IN_SECONDS - 11 * SECONDS_PER_GAME_HOUR));
+        if (!fadeOut && timeElapsed/ SECONDS_PER_GAME_HOUR > 11) drawShadeOverlay((timeElapsed - 11 * SECONDS_PER_GAME_HOUR)/(GAME_DAY_LENGTH_IN_SECONDS - 11 * SECONDS_PER_GAME_HOUR)); // Added code
         fadeOutStep(delta);
     }
 
@@ -444,7 +446,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         game.batch.setProjectionMatrix(game.defaultCamera.combined);
         if (showMenu) drawDurationMenu();
         game.batch.begin();
-        game.batch.draw(menuButton, _menu.x(), _menu.y(), _menu.width(), _menu.height());
+        game.batch.draw(menuButton, _menu.x(), _menu.y(), _menu.width(), _menu.height()); // Added code
         game.batch.draw(energyBar, energyBarX, energyBarY, energyBarWidth, energyBarHeight);
         game.batch.draw(counterBackground, counterBackgroundX, counterBackgroundY, counterBackgroundWidth, counterBackgroundHeight);
         font.draw(game.batch, counterString, game.screenWidth - 320 * game.scaleFactorX, game.screenHeight - 40 * game.scaleFactorY);
@@ -456,24 +458,22 @@ public class MainGameScreen implements Screen, InputProcessor {
      * @param delta The time elapsed since the last frame.
      */
     private void updateGameTime(float delta) {
+        // Start of added code
         timeElapsed += delta;
         currentHour = this.getTime();
 
         // Ensure the hour cycles through the active hours correctly (08:00 to 00:00)
         if (currentHour >= 24) { // If it reaches 00:00, reset to 08:00 the next day
             if (dayNum == 7) {
-
-                // Added Code //
                 totalScore += dailyScore.checkStreaks(); // Add bonus points from achieving streaks
-                // Added Code //
-
                 game.screenManager.setScreen(ScreenType.END_SCREEN, totalScore, dailyScore.getStreaks());
             }
+            // End of added code
             resetDay();
         }
     }
 
-    // Added Code //
+    // Start of added Code
     /**
      * Calculates the in game time
      */
@@ -497,7 +497,7 @@ public class MainGameScreen implements Screen, InputProcessor {
             dailyScore.resetDailyCounters();
         }
     }
-    // Added Code //
+    // End of added Code
 
     /**
      * Resets the game day, including resetting time and increasing the day counter.
@@ -512,9 +512,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         energyBar.dispose();
         energyBar = setEnergyBar();
 
-        // Added Code //
-        addDailyScore();
-        // Added Code //
+        addDailyScore(); // Added code
     }
 
     /**
@@ -553,29 +551,29 @@ public class MainGameScreen implements Screen, InputProcessor {
     public boolean touchDown(int touchX, int touchY, int pointer, int button){
         touchY = game.screenHeight - touchY;
 
-        if (_menu.isClicked(touchX, touchY)) {
+        if (_menu.isClicked(touchX, touchY)) { // Added code
             game.gameData.buttonClickedSoundActivate();
             game.screenManager.setScreen(ScreenType.MAIN_MENU);
-            return true;
+            return true; // Added code
         }
-        if (showMenu){
+        if (showMenu){ // Added code
             switch (activity){
                 case "study":
-                    if (_durationUp.isClicked(touchX,touchY)) {
+                    if (_durationUp.isClicked(touchX,touchY)) { // Added code
                         game.gameData.buttonClickedSoundActivate();
                         if (duration < 4) duration++;
                     }
-                    else if (_durationDown.isClicked(touchX,touchY)) {
+                    else if (_durationDown.isClicked(touchX,touchY)) { // Added code
                         game.gameData.buttonClickedSoundActivate();
                         if (duration > 1) duration--;
                     }
-                    else if (_menuBack.isClicked(touchX,touchY)) {
+                    else if (_menuBack.isClicked(touchX,touchY)) { // Added code
                         game.gameData.buttonClickedSoundActivate();
                         showMenu = false;
                         lockMovement = fadeOut;
                         duration = 1;
                     }
-                    else if (_activity.isClicked(touchX,touchY)) {
+                    else if (_activity.isClicked(touchX,touchY)) { // Added code
                         game.gameData.buttonClickedSoundActivate();
                         showMenu = false;
                         lockMovement = fadeOut;
@@ -584,17 +582,17 @@ public class MainGameScreen implements Screen, InputProcessor {
                         energyBar.dispose();
                         energyBar = setEnergyBar();
 
+                        // Start of added code
                         timeElapsed += duration * SECONDS_PER_GAME_HOUR;
-
-                        // Added Code //
                         dailyScore.study(duration, getDoorTouching());
-                        // Added Code //
+                        // End of added Code
 
                         game.screenManager.setScreen(ScreenType.MINI_GAME, duration);
                     }
                     break;
 
                 case "exercise":
+                // Start of added code
                 case "feed_ducks":
                 case "visit_city":
                     if (_durationUp.isClicked(touchX,touchY)) {
@@ -631,27 +629,28 @@ public class MainGameScreen implements Screen, InputProcessor {
                         }
                     }
                     break;
+                // End of added code
                 case "sleep":
-                    if (_durationUp.isClicked(touchX,touchY)) {
+                    if (_durationUp.isClicked(touchX,touchY)) { // Added code
                         game.gameData.buttonClickedSoundActivate();
                         if (duration < 10) duration++;
                     }
-                    else if (_durationDown.isClicked(touchX,touchY)) {
+                    else if (_durationDown.isClicked(touchX,touchY)) { // Added code
                         game.gameData.buttonClickedSoundActivate();
                         if (duration > 1) duration--;
                     }
-                    else if (_menuBack.isClicked(touchX,touchY)) {
+                    else if (_menuBack.isClicked(touchX,touchY)) { // Added code
                         game.gameData.buttonClickedSoundActivate();
                         showMenu = false;
                         lockMovement = fadeOut;
                         duration = 1;
                     }
-                    else if (_activity.isClicked(touchX,touchY)) {
+                    else if (_activity.isClicked(touchX,touchY)) { // Added code
                         game.gameData.buttonClickedSoundActivate();
                         showMenu = false;
                         lockMovement = fadeOut;
 
-                        // Added Code //
+                        // Start of added Code
                         if (dayNum == 7) {
                             addDailyScore();
                             totalScore += dailyScore.checkStreaks(); // Add bonus points from achieving streaks
@@ -660,7 +659,7 @@ public class MainGameScreen implements Screen, InputProcessor {
                             dailyScore.incrementSleep(); //increments count for number of early nights
                             resetDay();
                         }
-                        // Added Code //
+                        // End of Added Code
 
                         duration = 1;
                     }
@@ -680,7 +679,7 @@ public class MainGameScreen implements Screen, InputProcessor {
                         duration = 1;
                     }
                     break;
-                case "Ron_cooke_door":
+                case "Ron_cooke_door": // Added code
                 case "Piazza_door":
                     if (touchX >= studyOpt.x && touchX <= studyOpt.x + popupMenuWidth * zoom && touchY >= studyOpt.y && touchY <= studyOpt.y + popupMenuHeight * zoom) {
                         game.gameData.buttonClickedSoundActivate();
@@ -694,10 +693,7 @@ public class MainGameScreen implements Screen, InputProcessor {
                         game.gameData.eatingSoundActivate();
                         energyCounter += 3;
                         mealCount++;
-
-                        // Added Code //
-                        dailyScore.eat(getTime());
-                        // Added Code //
+                        dailyScore.eat(getTime()); // Added code
 
                         if (energyCounter > 10) energyCounter = 10;
                         energyBar.dispose();
@@ -724,6 +720,7 @@ public class MainGameScreen implements Screen, InputProcessor {
                         duration = 1;
                     }
                     break;
+                // Start of added code
                 case "Feed_ducks":
                     if (touchX >= studyOpt.x && touchX <= studyOpt.x + popupMenuWidth * zoom && touchY >= studyOpt.y && touchY <= studyOpt.y + popupMenuHeight * zoom) {
                         game.gameData.buttonClickedSoundActivate();
@@ -742,6 +739,7 @@ public class MainGameScreen implements Screen, InputProcessor {
                         duration = 1;
                     }
                     break;
+                // End of added code
             }
         }
 
@@ -750,7 +748,7 @@ public class MainGameScreen implements Screen, InputProcessor {
 
     @Override
     public void resize(int i, int i1) {
-        initDimensions();
+        initDimensions(); // Added code
     }
 
     @Override
@@ -788,6 +786,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         durationFont.dispose();
     }
 
+    // Start of added code
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.SEMICOLON) { // keybind for devhack to skip day and add to score
@@ -800,13 +799,14 @@ public class MainGameScreen implements Screen, InputProcessor {
             game.screenManager.setScreen(ScreenType.END_SCREEN, totalScore, "WaddleWare Representative\nProgrammer\nAthlete\nEarly Nights\nAll Rounder\nDaily Routine\n"); // Skip to the end screen
             return true;
         }
-
+        // End of added code
         return false;
     }
 
     /**
      * Skips the current day and updates the score for testing
      */
+    // Start of added code
     private void skipDayAddScore() {
         totalScore += 100;
         dayNum++;
@@ -816,7 +816,7 @@ public class MainGameScreen implements Screen, InputProcessor {
 
         updateGameTime(10); // Update game time. also checks for last day
     }
-
+    // End of added code
 
     @Override
     public boolean keyUp(int i) {

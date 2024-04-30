@@ -17,9 +17,9 @@ import com.main.utils.ScreenType;
  * handling rendering and input events within the control screen context.
  */
 public class MainControlScreen implements Screen, InputProcessor {
-    final Main game;
-    final BitmapFont font;
-    final String objective;
+    final Main game; // Added code
+    final BitmapFont font; // Added code
+    final String objective; // Added code
     private final Texture backButton, controlLabel, controls;
     // X and Y coordinates
     private float backButtonX, backButtonY, controlLabelX, controlLabelY, controlsX, controlsY, objectiveY, instructionX, instructionY;

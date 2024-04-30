@@ -16,7 +16,7 @@ public class GameMap extends TiledMap {
     private final TiledMap gameMap;
     private final OrthogonalTiledMapRenderer tiledMapRenderer;
     private final OrthographicCamera camera;
-    final int tileSize = 16;
+    final int tileSize = 16; // Added code
     float layerToggleTime;
 
     /**

@@ -9,7 +9,7 @@ import com.badlogic.gdx.audio.Music;
  */
 public class GameMusic {
 
-    final Music audio;
+    final Music audio; // Added Code
     // Music levels is quarters
     private int musicLevel = 4;
 

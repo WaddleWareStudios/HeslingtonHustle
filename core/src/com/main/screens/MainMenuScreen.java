@@ -14,8 +14,7 @@ import com.main.utils.ScreenType;
  * such as starting the gameplay, viewing controls, adjusting settings, or exiting the game.
  */
 public class MainMenuScreen implements Screen, InputProcessor {
-
-    final Main game;
+    final Main game; // Added code
 
     Texture heslingtonHustleLabel, playButton, controlsButton, settingsButton, exitButton;
 

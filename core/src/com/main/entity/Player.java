@@ -19,6 +19,7 @@ import com.main.utils.Directions;
  * and animations.
  */
 public class Player extends Entity implements Disposable {
+    // Start of added code
     public static final float ANIMATION_SPEED = 0.2f; // speed that sprite will animate or frame duration
     public static final int SPRITE_X = 24;// this is in reference to the sprite sheet
     public static final int SPRITE_Y = 38;
@@ -32,6 +33,7 @@ public class Player extends Entity implements Disposable {
 
     public final float startX;
     public final float startY;
+    // End of added code
 
     Texture idleSheet, walkSheet;
 
@@ -52,8 +54,8 @@ public class Player extends Entity implements Disposable {
         this.camera = camera;
 
         tileSize = gameMap.getTileSize();
-        this.collisionHandler = new CollisionHandler(gameMap.getMap(), tileSize, tileSize, SPRITE_X, SPRITE_Y * 0.5f, 0.7f, 0.7f);
-        this.collisionHandler.addCollisionLayers("Water", "Trees", "wall_1", "wall_2", "wall_3", "roof_1", "roof_2", "roof_3", "other");
+        this.collisionHandler = new CollisionHandler(gameMap.getMap(), tileSize, tileSize, SPRITE_X, SPRITE_Y * 0.5f, 0.7f, 0.7f); // Added code
+        this.collisionHandler.addCollisionLayers("Water", "Trees", "wall_1", "wall_2", "wall_3", "roof_1", "roof_2", "roof_3", "other"); // Added code
         //this.settingsScreen = settingsScreen;
 
         this.speed = 200;
@@ -63,7 +65,7 @@ public class Player extends Entity implements Disposable {
         worldY = startY;
 
         updateGender();
-        setDirection(Directions.Down);
+        setDirection(Directions.Down);  // Added code
     }
 
     /**
@@ -96,37 +98,37 @@ public class Player extends Entity implements Disposable {
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
             targY = worldY + (float) (normalizedSpeed * Gdx.graphics.getDeltaTime());
             currentAnimation = walkUpAnimation;
-            dir = Directions.Up;
+            dir = Directions.Up; // Added code
             isMoving = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) {
             targY = worldY - (float) (normalizedSpeed * Gdx.graphics.getDeltaTime());
             currentAnimation = walkDownAnimation;
-            dir = Directions.Down;
+            dir = Directions.Down; // Added code
             isMoving = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
             targX = worldX - (float) (normalizedSpeed * Gdx.graphics.getDeltaTime());
             currentAnimation = walkLeftAnimation;
-            dir = Directions.Left;
+            dir = Directions.Left; // Added code
             isMoving = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
             targX = worldX + (float) (normalizedSpeed * Gdx.graphics.getDeltaTime());
             currentAnimation = walkRightAnimation;
-            dir = Directions.Right;
+            dir = Directions.Right; // Added code
             isMoving = true;
         }
 
         // player doesn't walk beyond the map
-        if (targX + SPRITE_X > gameMap.getWidth()){
-            targX = gameMap.getWidth() - SPRITE_X;
+        if (targX + SPRITE_X > gameMap.getWidth()){ // Added code
+            targX = gameMap.getWidth() - SPRITE_X; // Added code
         }
         else if (targX < 0){
             targX = 0;
         }
-        if (targY + SPRITE_Y > gameMap.getHeight()){
-            targY = gameMap.getHeight() - SPRITE_Y;
+        if (targY + SPRITE_Y > gameMap.getHeight()){ // Added code
+            targY = gameMap.getHeight() - SPRITE_Y; // Added code
         }
         else if (targY < 0){
             targY = 0;
@@ -147,8 +149,8 @@ public class Player extends Entity implements Disposable {
 
         stateTime += delta;
 
-        float camX = worldX + SPRITE_Y /2f;
-        float camY = worldY + SPRITE_Y /2f;
+        float camX = worldX + SPRITE_Y /2f; // Added code
+        float camY = worldY + SPRITE_Y /2f; // Added code
 
         camera.position.set(camX, camY, 0);
         // this will make sure the camera follows the player

@@ -13,7 +13,7 @@ import com.main.utils.ScreenType;
  * and the character's gender.
  */
 public class MainSettingsScreen implements Screen, InputProcessor {
-    final Main game;
+    final Main game; // Added code
     boolean gender;
     private final Texture backButton, settingsLabel, musicUpButton, musicDownButton, musicLabel, soundUpButton, soundLabel, soundDownButton;
     private Texture musicBar, soundBar, boyButton, girlButton;

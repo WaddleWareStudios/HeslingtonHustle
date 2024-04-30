@@ -5,18 +5,19 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout; // Added code
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.main.Main;
-import com.main.utils.Button;
-import com.main.utils.Leaderboards;
+import com.main.utils.Button; // Added code
+import com.main.utils.Leaderboards; // Added code
 
 /**
  * Represents the end screen of the game, displaying the users score and a leaderboard.
  * Allows the user to enter their name if they qualify for the leaderboard.
  */
 public class EndScreen implements Screen, InputProcessor {
+    // Start of added code
     final Main game;
     final Texture playAgainButton;
     final BitmapFont font;
@@ -26,39 +27,40 @@ public class EndScreen implements Screen, InputProcessor {
     private final String streaks;
     private final int userScore;
     private boolean usernameEntry = false;
-    boolean exitFlag;
     float maxNameWidth;
     Button playAgain;
     float titleY, userScoreY, leaderboardStartY, entryBoxY;
     GlyphLayout layout = new GlyphLayout();
     private float blinkTimer = 0f; // Timer var for blinking of underscores in text entry
     private boolean showUnderscore = true; // Flag to control visibility of underscore
+    // End of added code
+    boolean exitFlag;
 
     /**
      * Constructs a new EndScreen with the main game instance and user score.
      * @param game The main game instance.
      * @param userScore The user's score achieved in the game.
      */
-    public EndScreen(Main game, int userScore, String streaks) {
-        this.game = game;
-        this.userScore = userScore;
-        titleText = "Game Over";
+    public EndScreen(Main game, int userScore, String streaks) { // Added code
+        this.game = game; // Added code
+        this.userScore = userScore; // Added code
+        titleText = "Game Over"; // Added code
         playAgainButton = new Texture("end_gui/play_button.png");
         font = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
-        leaderboards = new Leaderboards();
-        playAgain = new Button();
-        this.streaks = streaks;
-        initDimensions();
+        leaderboards = new Leaderboards(); // Added code
+        playAgain = new Button(); // Added code
+        this.streaks = streaks; // Added code
+        initDimensions(); // Added code
 
         // Check if user scored high enough to add their name to the leaderboard
-        usernameEntry = leaderboards.doesPlaceT10(userScore);
+        usernameEntry = leaderboards.doesPlaceT10(userScore); // Added code
     }
 
     /**
      * calculates the dimensions and positions of buttons and textures
      */
-    private void initDimensions()
-    {
+    // Start of added code
+    private void initDimensions() {
         playAgain.init(
                 (game.screenWidth - (playAgainButton.getWidth() * 6 * game.scaleFactorX)) / 2f,
                 50f * game.scaleFactorY,
@@ -73,7 +75,7 @@ public class EndScreen implements Screen, InputProcessor {
         // Leaderboard position
         leaderboardStartY = entryBoxY - 60f * game.scaleFactorY;
     }
-
+    // End of added code
 
     /**
      * Displays the end screen, including the user's score, prompt for entering a username if necessary, and the leaderboard.
@@ -86,11 +88,28 @@ public class EndScreen implements Screen, InputProcessor {
         game.batch.setProjectionMatrix(game.defaultCamera.combined);
         game.batch.begin();
 
+        // Start of added code
         float titleX = game.screenWidth / 2f; // Calculate title x co-ord to centre it
 
         // Draw title and users score at the top of the screen
         font.draw(game.batch, titleText, titleX, titleY, 0, Align.center, false);
         font.draw(game.batch, "Your score: " + userScore, titleX, userScoreY, 0, Align.center, false);
+
+        font.getData().setScale(2f * game.scaleFactorX, 2f * game.scaleFactorY); // Smaller font for streaks
+        font.draw(game.batch, "Streaks:", 20, game.screenHeight + 20, 0, Align.left, false);
+        float currentY = game.screenHeight - 10;
+
+        // Check if there are any streaks
+        if (streaks.isEmpty()) { // "None" if no streaks
+            font.draw(game.batch, "None", 20, currentY, 0, Align.left, false);
+        } else { // Display each streak
+            String[] streakLines = streaks.split("\n");
+            for (String line : streakLines) {
+                font.draw(game.batch, line, 20, currentY, 0, Align.left, false);
+                currentY -= 30; // Spacing between lines
+            }
+        }
+        font.getData().setScale(3f * game.scaleFactorX, 3f * game.scaleFactorY); // Reset font scale
 
         // Render the username entry box if active
         if (usernameEntry) {
@@ -200,6 +219,7 @@ public class EndScreen implements Screen, InputProcessor {
             font.draw(game.batch, scoreText, scoreX, y, 0, Align.left, false);
         }
     }
+    // End of added code
 
     @Override
     public boolean keyDown(int i) {
@@ -218,6 +238,7 @@ public class EndScreen implements Screen, InputProcessor {
      */
     @Override
     public boolean keyTyped(char c) {
+        // Start of added code
         if (usernameEntry) { // Handle text input for adding name to leaderboard
             // Allow only letters to be typed up to 3 characters long
             if (Character.isLetter(c) && username.length() < 3) {
@@ -234,6 +255,7 @@ public class EndScreen implements Screen, InputProcessor {
 
         return true;
     }
+    // End of added code
 
     /**
      * Handles touch input for the end screen.
@@ -248,13 +270,13 @@ public class EndScreen implements Screen, InputProcessor {
         touchY = game.screenHeight - touchY;
 
         // Check if play again button is clicked
-        if (playAgain.isClicked(touchX, touchY)) {
+        if (playAgain.isClicked(touchX, touchY)) { // Added code
             game.gameData.buttonClickedSoundActivate();
             game.setup();
             return true;
         }
 
-        return false;
+        return false; // Added code
     }
 
     @Override
